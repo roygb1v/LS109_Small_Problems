@@ -1,0 +1,35 @@
+function vigenere(str, keyword) {
+    var string = str.toUpperCase().match(/\w+/g).join('');
+    var hsh = {'A':0, 'B':1, 'C':2, 'D':3, 'E':4, 'F':5, 'G':6, 'H':7, 'I':8, 'J':9, 'K':10, 'L':11, 'M':12, 'N':13, 'O':14, 'P':15, 'Q':16, 'R':17, 'S':18, 'T':19, 'U':20, 'V':21, 'W':22, 'X':23, 'Y':24, 'Z':25};
+    var invertHsh = inverter(hsh);
+    var array = [];
+    var keywordArray = keyword.toUpperCase().split('').map(function (char) {
+		return hsh[char];
+    });
+
+	var length = Math.ceil(string.length / keywordArray.length);
+	var keywordString = (keywordArray.join(',') + ',').repeat(length);
+	keywordString = keywordString.split(',').map(n => Number(n));
+
+	var numArray = string.split('').map(c => hsh[c]);
+	for (i = 0; i < string.length; i += 1) {
+		array.push(hsh[string[i]] + keywordString[i]);
+    }
+	var holder;
+	return array.map(function (num) {
+		holder = num;
+		if (holder >= 26) {
+			holder = holder % 26;
+        }
+		return invertHsh[holder];
+    }).join('').match(/\w{4}/g).join(' ');
+} 
+
+function invertHsh(hash) {
+    var obj = {};
+    var i;
+    for (i in hash) {
+      obj[hash[i]] = i;
+    }
+    return obj;
+ }
